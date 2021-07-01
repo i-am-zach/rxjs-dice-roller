@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import styled from "styled-components"
 import { BehaviorSubject } from 'rxjs'
 import Dice from './Dice';
-import { rollSubscriber, eventSubscriber } from "./diceService";
+import { rollSubject, diceService } from "./diceService";
 import { useMemo } from 'react';
 
 const StyledGrid = styled.div`
@@ -20,10 +20,10 @@ type DiceRoll = {
 export default function DiceGroup() {
     const [diceRolls, setDiceRolls] = useState<DiceRoll[]>([]);
 
-    const getTotal = useMemo(() =>  diceRolls.reduce((reducer, obj) => reducer + obj.rollValue, 0), [diceRolls])
+    const getTotal = useMemo(() => diceRolls.reduce((reducer, obj) => reducer + obj.rollValue, 0), [diceRolls])
 
     useEffect(() => {
-        const subscription = rollSubscriber.subscribe(rollObject => {
+        const subscription = rollSubject.subscribe(rollObject => {
             setDiceRolls(oldDiceRolls => {
                 oldDiceRolls = oldDiceRolls.filter(obj => obj.index !== rollObject.index);
                 oldDiceRolls.push(rollObject);
@@ -37,7 +37,7 @@ export default function DiceGroup() {
     }, []);
 
     const onRollDice = () => {
-        eventSubscriber.next("roll");
+        diceService.requestRolls();
     }
 
     return (

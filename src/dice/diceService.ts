@@ -5,14 +5,14 @@ type DiceRollObject = {
     index: number,
 }
 
-export const rollSubscriber = new BehaviorSubject<DiceRollObject>({ rollValue: 0, index: -1 });
-export const eventSubscriber = new BehaviorSubject<"roll">("roll");
+export const rollSubject = new BehaviorSubject<DiceRollObject>({ rollValue: 0, index: -1 });
+export const eventSubject = new BehaviorSubject<"roll">("roll");
 
 export const diceService = {
     roll: function (rollValue: number, index: number) {
-        rollSubscriber.next({ rollValue, index });
+        rollSubject.next({ rollValue, index });
     },
     requestRolls: function () {
-        eventSubscriber.next("roll");
+        eventSubject.next("roll");
     }
 }

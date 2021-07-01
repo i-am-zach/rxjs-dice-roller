@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useEffect } from 'react';
-import { eventSubscriber, diceService } from "./diceService"
+import { eventSubject, diceService } from "./diceService"
 
 export type DiceComponentProps = {
     index: number,
@@ -10,7 +10,7 @@ export default function Dice({ index }: DiceComponentProps) {
     const [rollNumber, setRollNumber] = useState(1);
 
     useEffect(() => {
-        const subscription = eventSubscriber.subscribe(event => {
+        const subscription = eventSubject.subscribe(event => {
             if (event === "roll") {
                 const newNumber = Math.ceil(Math.random() * 6);
                 diceService.roll(newNumber, index);
